@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>☀️ 오늘의 어린이 아침 뉴스</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+        :root {
+            --bg-color: #fbf9f5;
+            --card-bg: #ffffff;
+            --text-main: #2d3748;
+            --text-muted: #718096;
+            --accent-blue: #4a90e2;
+            --accent-orange: #ff922b;
+            --accent-yellow: #fff3bf;
+            --border-yellow: #fab005;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            padding-bottom: 60px;
+        }
+
+        /* 헤더 스타일 */
+        header {
+            text-align: center;
+            padding: 40px 20px 30px 20px;
+        }
+
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            color: #1a202c;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .date-badge {
+            display: inline-block;
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* 안내 문구 */
+        .intro-box {
+            background-color: #e8f4fd;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+            color: #2b6cb0;
+            text-align: center;
+            border-left: 5px solid var(--accent-blue);
+        }
+
+        /* 뉴스 카드 스타일 */
+        .news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .news-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+            border: 1px solid #edf2f7;
+            transition: transform 0.2s ease;
+        }
+
+        .news-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .rank-badge {
+            background-color: var(--accent-orange);
+            color: white;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 2px 10px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+
+        .source-badge {
+            background-color: #edf2f7;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .news-title {
+            font-size: 1.3rem;
+            color: #1a202c;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .news-summary {
+            font-size: 1.05rem;
+            color: #4a5568;
+            margin-bottom: 16px;
+            word-break: keep-all;
+        }
+
+        /* 어려운 단어 풀이 */
+        .dictionary-box {
+            background-color: var(--accent-yellow);
+            border-left: 4px solid var(--border-yellow);
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .dictionary-title {
+            font-weight: 700;
+            color: #b56e02;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* 영상 링크 버튼 */
+        .video-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #ff0000;
+            color: white;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: background-color 0.2s;
+        }
+
+        .video-btn:hover {
+            background-color: #cc0000;
+        }
+
+        /* 푸터 */
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-top: 1px solid #e2e8f0;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo">☀️</div>
+            <h1>오늘의 어린이 아침 뉴스</h1>
+            <div class="date-badge" id="current-date">2026년 5월 17일 일요일</div>
+        </header>
+
+        <div class="intro-box">
+            👋 <strong>어린이 여러분 반가워요!</strong> 매일 아침 세상의 신기하고 중요한 이야기들을 자극적이지 않고 쉬운 말로 전해드립니다. 빨간 버튼을 누르면 뉴스 영상으로 바로 이동해요!
+        </div>
+
+        <main class="news-list">
+            
+            <!-- 뉴스 1 -->
+            <article class="news-card">
+                <div class="card-header">
+                    <span class="rank-badge">중요도 1</span>
+                    <span class="source-badge">KBS 뉴스</span>
+                </div>
+                <h2 class="news-title">🚀 "달까지 달린다!"… 대한민국이 만든 우주 탐사 로봇 공개</h2>
+                <p class="news-summary">
+                    우리나라 과학자들이 달 표면을 스스로 돌아다니며 조사할 수 있는 똑똑한 로봇(로버)을 만들었어요. 이 로봇은 달의 울퉁불퉁하고 먼지가 많은 위험한 땅에서도 넘어지지 않고 씩씩하게 걸어갈 수 있답니다. 앞으로 우주비행사 형, 누나들이 달에 가기 전에 먼저 가서 땅을 조사하는 멋진 임무를 맡게 될 거래요!
+                </p>
+                <div class="dictionary-box">
+                    <div class="dictionary-title">💡 어려운 단어 풀이</div>
+                    <p><strong>탐사(探査):</strong> 알려지지 않은 물건이나 새로운 땅을 찾아가서 샅샅이 조사하는 것.</p>
+                </div>
+                <a href="https://www.youtube.com" target="_blank" class="video-btn">
+                    📺 유튜브 영상으로 바로 보기
+                </a>
+            </article>
+
+            <!-- 뉴스 2 -->
+            <article class="news-card">
+                <div class="card-header">
+                    <span class="rank-badge">중요도 2</span>
+                    <span class="source-badge">SBS 뉴스</span>
+                </div>
+                <h2 class="news-title">🐼 "벌써 이렇게 컸다고?"… 아기 판다들의 신나는 봄소풍</h2>
+                <p class="news-summary">
+                    동물원에 사는 아기 판다들이 따뜻한 봄을 맞아 처음으로 야외 놀이터로 소풍을 나왔습니다. 엄마 판다의 뒤를 졸졸 따라다니며 미끄럼틀도 타고, 푸른 잔디밭에서 뒹굴며 장난치는 모습이 포착되었는데요. 사육사 아저씨는 아기 판다들이 아주 건강하게 잘 자라고 있다고 기쁜 소식을 전했습니다.
+                </p>
+                <div class="dictionary-box">
+                    <div class="dictionary-title">💡 어려운 단어 풀이</div>
+                    <p><strong>포착(捕捉):</strong> 어떤 꼭 필요한 순간이나 모습을 눈으로 딱 찾아내거나 사진/영상으로 찍는 것.</p>
+                </div>
+                <a href="https://www.youtube.com" target="_blank" class="video-btn">
+                    📺 유튜브 영상으로 바로 보기
+                </a>
+            </article>
+
+            <!-- 뉴스 3 -->
+            <article class="news-card">
+                <div class="card-header">
+                    <span class="rank-badge">중요도 3</span>
+                    <span class="source-badge">MBC 뉴스</span>
+                </div>
+                <h2 class="news-title">🌊 "바다 쓰레기는 내가 잡는다!"… 청소 로봇 배의 활약</h2>
+                <p class="news-summary">
+                    바다에 버려진 플라스틱과 그물 때문에 해양 동물들이 아파하고 있어요. 그래서 인공지능(AI)이 탑재된 커다란 '청소 로봇 배'가 바다에 투입되었습니다. 이 배는 사람이 타지 않아도 스스로 바다 위를 둥둥 떠다니며 쓰레기만 쏙쏙 골라 담는 능력을 가지고 있어요. 우리 바다가 다시 깨끗해질 수 있겠죠?
+                </p>
+                <div class="dictionary-box">
+                    <div class="dictionary-title">💡 어려운 단어 풀이</div>
+                    <p><strong>탑재(搭載):</strong> 비행기, 배, 자동차 또는 기계 안에 물건이나 특별한 기능(프로그램)을 쏙 집어넣어 싣는 것.</p>
+                </div>
+                <a href="https://www.youtube.com" target="_blank" class="video-btn">
+                    📺 유튜브 영상으로 바로 보기
+                </a>
+            </article>
+
+            <!-- 뉴스 4 -->
+            <article class="news-card">
+                <div class="card-header">
+                    <span class="rank-badge">중요도 4</span>
+                    <span class="source-badge">YTN 뉴스</span>
+                </div>
+                <h2 class="news-title">🤖 "체육 시간에 로봇이 나타났다!"… 미래형 초등학교 교실</h2>
+                <p class="news-summary">
+                    한 초등학교 교실에 아주 특별한 선생님이 오셨습니다. 바로 인공지능 화면이 달린 운동 로봇인데요! 이 로봇은 친구들이 줄넘기를 하거나 달리기를 할 때 자세가 바른지, 얼마나 열심히 했는지 카메라로 보고 칭찬을 해줍니다. 친구들은 게임을 하는 것 같아서 체육 시간이 훨씬 더 즐거워졌다고 해요.
+                </p>
+                <div class="dictionary-box">
+                    <div class="dictionary-title">💡 어려운 단어 풀이</div>
+                    <p><strong>미래형(未來型):</strong> 앞으로 다가올 앞날에 어울리는 아주 새롭고 발전된 모습이나 스타일.</p>
+                </div>
+                <a href="https://www.youtube.com" target="_blank" class="video-btn">
+                    📺 유튜브 영상으로 바로 보기
+                </a>
+            </article>
+
+            <!-- 뉴스 5 -->
+            <article class="news-card">
+                <div class="card-header">
+                    <span class="rank-badge">중요도 5</span>
+                    <span class="source-badge">JTBC 뉴스</span>
+                </div>
+                <h2 class="news-title">🌌 밤하늘에 펼쳐진 마법… 전 세계를 물들인 '분홍빛 오로라'</h2>
+                <p class="news-summary">
+                    어젯밤 세계 곳곳의 밤하늘이 보라색과 분홍색 빛으로 물드는 마법 같은 일이 일어났습니다. 바로 우주에서 온 신비한 에너지가 지구와 만나 빛을 내는 '오로라' 현상 때문인데요. 평소에는 아주 추운 북극 근처에서만 볼 수 있지만, 이번에는 아주 강력한 우주 바람이 불어와서 더 많은 나라의 사람들이 멋진 우주 쇼를 구경할 수 있었다고 합니다.
+                </p>
+                <div class="dictionary-box">
+                    <div class="dictionary-title">💡 어려운 단어 풀이</div>
+                    <p><strong>현상(現象):</strong> 우리 눈이나 피부로 느킬 수 있게 세상에 나타나는 신기한 일이나 모양.</p>
+                </div>
+                <a href="https://www.youtube.com" target="_blank" class="video-btn">
+                    📺 유튜브 영상으로 바로 보기
+                </a>
+            </article>
+
+        </main>
+
+        <footer>
+            <p>☀️ 어린이 아침 뉴스 서비스 9살 눈높이 맞춤형 큐레이션</p>
+        </footer>
+    </div>
+
+    <script>
+        // 자동으로 오늘 날짜를 표시하는 간단한 코드
+        const today = new Date();
+        const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+        document.getElementById('current-date').textContent = today.toLocaleDateString('ko-KR', options);
+    </script>
+</body>
+</html>
