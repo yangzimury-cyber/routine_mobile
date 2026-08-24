@@ -189,13 +189,16 @@
         const todayName = fullWeekList[todayIdx];
         const todayLabel = todayIdx >= 5 ? '주말' : todayName;
 
+        // [수정 포인트] 지정된 위치에 월~금 신규 루틴 추가
         const routineData = {
             morning: [
                 { id: 'english', name: '영어도서관 30분', emoji: '📚', trigger: '아침밥 먹으면서', effort: '집중해서 10분만 들어도 OK!', allowSick: true },
+                { id: 'english_read_along', name: '영어 따라 읽기', emoji: '🗣️', weekdayOnly: true, allowSick: true },
                 { id: 'math_all', name: '수학공부(핀란드/학교/달콤)', emoji: '🔢', trigger: '오전 공부 시간', weekendEnabled: true, allowSick: true }
             ],
             afternoon: [
                 { id: 'english_listening', name: '영어책 집중듣기', emoji: '🎧', instruction: '오늘 읽은 책에서 제일 마음에 드는 문장 하나만 적어줘', isSixDay: true, allowSick: true },
+                { id: 'english_write_sentence', name: '마음에 드는 문장 따라 쓰기', emoji: '✏️', weekdayOnly: true, allowSick: true },
                 { id: 'hanja', name: '한자 학습', emoji: '✍️', trigger: '집중듣기 끝나면', instruction: '학습지? 한자어책?', offDays: [1, 3], allowSick: true },
                 { id: 'reading_combined', name: '독서 시간', emoji: '📖', trigger: '읽고 싶은 책 자유롭게 꺼내기', weekendEnabled: true, allowSick: true },
                 { id: 'ringfit', name: '운동 (러닝/링핏)', emoji: '🏃', trigger: '식후 한 시간 뒤', weekendEnabled: true, allowSick: true }
@@ -203,8 +206,6 @@
         };
 
         const satItems = ['보드게임 1판', '물감 그림 그리기', '만들기 활동', '도서관 방문', '가족 예능 보기'];
-        
-        // [수정 포인트] 일요일 브릿지 항목 수정 (영어도서관, ORT -> 영어집중듣기 통합)
         const sunItems = ['영어집중듣기', '수학 문제 1개만', '책 4페이지만 읽기'];
         
         const readingMsgs = ["책 속의 보물을 찾았구나! 💎", "생각의 주머니가 한 뼘 더 커졌네! 🎈", "멋진 독서가! 오늘 정말 훌륭해 📖"];
