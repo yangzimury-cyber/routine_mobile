@@ -189,17 +189,16 @@
         const todayName = fullWeekList[todayIdx];
         const todayLabel = todayIdx >= 5 ? '주말' : todayName;
 
-        // [수정 포인트] 아침 루틴에 수학공부 추가 / 오후 루틴에서 책가방 비우기 삭제
+        // [수정 포인트] 오후 루틴 문구 수정 및 독서 통합 반영
         const routineData = {
             morning: [
                 { id: 'english', name: '영어도서관 30분', emoji: '📚', trigger: '아침밥 먹으면서', effort: '집중해서 10분만 들어도 OK!', allowSick: true },
-                { id: 'math_all', name: '수학공부', emoji: '🔢', trigger: '오전 공부 시간', weekendEnabled: true, allowSick: true }
+                { id: 'math_all', name: '수학공부(핀란드/학교/달콤)', emoji: '🔢', trigger: '오전 공부 시간', weekendEnabled: true, allowSick: true }
             ],
             afternoon: [
-                { id: 'english_listening', name: '영어책 집중듣기', emoji: '🎧', trigger: '수학 끝내고 재밌는 책 보자', instruction: '오늘 읽은 책에서 제일 마음에 드는 문장 하나만 적어줘', isSixDay: true, allowSick: true },
-                { id: 'hanja', name: '한자 2페이지', emoji: '✍️', trigger: '집중듣기 끝나면', offDays: [1, 3], allowSick: true },
-                { id: 'reading_weekday', name: '자유 선택 독서', emoji: '📖', trigger: '평일 오후 읽고 싶은 책 꺼내기', weekdayOnly: true, allowSick: true },
-                { id: 'reading_weekend', name: '주말 고정 독서', emoji: '📕', trigger: '토~일 이야기책 읽기', weekendOnly: true, allowSick: true },
+                { id: 'english_listening', name: '영어책 집중듣기', emoji: '🎧', instruction: '오늘 읽은 책에서 제일 마음에 드는 문장 하나만 적어줘', isSixDay: true, allowSick: true },
+                { id: 'hanja', name: '한자 학습', emoji: '✍️', trigger: '집중듣기 끝나면', instruction: '학습지? 한자어책?', offDays: [1, 3], allowSick: true },
+                { id: 'reading_combined', name: '독서 시간', emoji: '📖', trigger: '읽고 싶은 책 자유롭게 꺼내기', weekendEnabled: true, allowSick: true },
                 { id: 'ringfit', name: '운동 (러닝/링핏)', emoji: '🏃', trigger: '식후 한 시간 뒤', weekendEnabled: true, allowSick: true }
             ]
         };
@@ -273,7 +272,7 @@
                     <span class="routine-name">${r.name}</span>
                 </div>
                 ${r.effort ? `<div class="effort-guide">⭕ ${r.effort}</div>` : ''}
-                <div class="routine-trigger">⏰ ${r.trigger}</div>
+                ${r.trigger ? `<div class="routine-trigger">⏰ ${r.trigger}</div>` : ''}
                 ${r.instruction ? `<div class="routine-note">💡 ${r.instruction}</div>` : ''}
                 <div class="days-grid ${gridClass}">${dHtml}</div>
             </div>`;
