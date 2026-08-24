@@ -2,314 +2,337 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>☀️ 오늘의 어린이 아침 뉴스</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#5e35b1">
+    <title>우리 아이 주간 루틴표</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
-
-        :root {
-            --bg-color: #fbf9f5;
-            --card-bg: #ffffff;
-            --text-main: #2d3748;
-            --text-muted: #718096;
-            --accent-blue: #4a90e2;
-            --accent-orange: #ff922b;
-            --accent-yellow: #fff3bf;
-            --border-yellow: #fab005;
+        /* 기본 리셋 및 모바일 터치 최적화 */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; 
+            background: linear-gradient(135deg, #e3f2fd 0%, #e1bee7 100%); 
+            min-height: 100vh; 
+            padding: 12px; 
+            padding-bottom: 60px; 
+            overflow-x: hidden; 
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        .container { max-width: 500px; margin: 0 auto; position: relative; }
+        
+        /* 카드 컴포넌트 */
+        .card { 
+            background: white; 
+            border-radius: 16px; 
+            padding: 16px; 
+            margin-bottom: 12px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06); 
         }
-
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.6;
-            padding: 20px;
+        h1 { font-size: 20px; color: #333; margin-bottom: 6px; text-align: center; }
+        h2 { font-size: 16px; color: #333; margin-bottom: 12px; }
+        .subtitle { color: #666; font-size: 12px; margin-bottom: 14px; line-height: 1.4; text-align: center; }
+        
+        /* 필터 버튼 */
+        .filter-container { display: flex; gap: 8px; margin-bottom: 4px; }
+        .filter-btn { 
+            flex: 1; 
+            padding: 10px; 
+            border: 2px solid #5e35b1; 
+            border-radius: 10px; 
+            background: white; 
+            color: #5e35b1; 
+            font-weight: bold; 
+            font-size: 14px; 
+            cursor: pointer; 
         }
-
-        .container {
-            max-width: 760px;
-            margin: 0 auto;
-            padding-bottom: 60px;
+        .filter-btn.active { background: #5e35b1; color: white; }
+        
+        /* 섹션 헤더 */
+        .section-header { 
+            display: inline-block; 
+            padding: 6px 12px; 
+            border-radius: 8px; 
+            font-weight: 600; 
+            font-size: 13px; 
+            margin-bottom: 10px; 
+            margin-top: 6px; 
         }
-
-        /* 헤더 스타일 */
-        header {
-            text-align: center;
-            padding: 40px 20px 30px 20px;
+        .morning { background: #fff9c4; color: #f57f17; }
+        .afternoon { background: #ffe0b2; color: #e65100; }
+        
+        /* 루틴 카드 */
+        .routine-card { background: #f8f9fa; border-radius: 12px; padding: 12px; margin-bottom: 10px; border: 1px solid #eee; }
+        .routine-header { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+        .routine-emoji { font-size: 20px; }
+        .routine-name { font-size: 14px; font-weight: 700; color: #333; }
+        .effort-guide { font-size: 11px; color: #ff6f00; font-weight: 600; margin-left: 26px; margin-bottom: 3px; }
+        .routine-trigger { font-size: 11px; color: #777; font-style: italic; margin-bottom: 3px; margin-left: 26px; }
+        .routine-note { font-size: 11px; color: #666; margin-left: 26px; margin-bottom: 8px; line-height: 1.3; }
+        
+        /* 요일 버튼 그리드 (모바일 레이아웃) */
+        .days-grid { display: grid; gap: 4px; margin-top: 8px; }
+        .days-grid.seven-days { grid-template-columns: repeat(7, 1fr); }
+        .days-grid.six-days { grid-template-columns: repeat(6, 1fr); }
+        .days-grid.five-days { grid-template-columns: repeat(5, 1fr); }
+        .days-grid.weekend-only { grid-template-columns: repeat(2, 1fr); }
+        
+        .day-box { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+        .day-label { font-size: 11px; color: #888; font-weight: 500; }
+        .day-btn { 
+            width: 100%; 
+            height: 42px; 
+            border: 1.5px solid #ddd; 
+            border-radius: 8px; 
+            background: white; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer; 
         }
-
-        .logo {
-            font-size: 3rem;
-            margin-bottom: 10px;
+        .day-btn.checked { background-color: #2e7d32 !important; border-color: #1b5e20 !important; }
+        .day-btn.circle { background-color: #ff8f00 !important; border-color: #ff6f00 !important; }
+        .day-btn.sick { background-color: #5c6bc0 !important; border-color: #3949ab !important; font-size: 16px; }
+        .day-btn.off { background: #eee; border-color: #ddd; color: #ccc; cursor: not-allowed; font-size: 10px; }
+        
+        /* 아이콘 크기 최적화 */
+        .checkmark { width: 20px; height: 20px; stroke: white; stroke-width: 4; fill: none; }
+        .circle-icon { width: 14px; height: 14px; border: 4px solid white; border-radius: 50%; }
+        
+        /* 폭죽 모션 */
+        .confetti { position: fixed; width: 8px; height: 8px; z-index: 1001; top: -10px; border-radius: 2px; animation: fall linear forwards; }
+        @keyframes fall { to { transform: translateY(100vh) rotate(720deg); } }
+        
+        /* 주말 섹션 */
+        .weekend-wrapper { display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; }
+        .activity-btn { 
+            width: 100%; 
+            padding: 12px; 
+            margin-bottom: 6px; 
+            border: 1.5px solid #e0e0e0; 
+            border-radius: 10px; 
+            background: white; 
+            text-align: left; 
+            cursor: pointer; 
+            font-weight: 600; 
+            font-size: 13px;
         }
-
-        header h1 {
-            font-size: 1.8rem;
-            color: #1a202c;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .date-badge {
-            display: inline-block;
-            background-color: var(--accent-blue);
-            color: white;
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        /* 안내 문구 */
-        .intro-box {
-            background-color: #e8f4fd;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 30px;
-            font-size: 0.95rem;
-            color: #2b6cb0;
-            text-align: center;
-            border-left: 5px solid var(--accent-blue);
-        }
-
-        /* 뉴스 카드 스타일 */
-        .news-list {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .news-card {
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
-            border: 1px solid #edf2f7;
-            transition: transform 0.2s ease;
-        }
-
-        .news-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-
-        .rank-badge {
-            background-color: var(--accent-orange);
-            color: white;
-            font-weight: 700;
-            font-size: 0.85rem;
-            padding: 2px 10px;
-            border-radius: 6px;
-            text-transform: uppercase;
-        }
-
-        .source-badge {
-            background-color: #edf2f7;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: 500;
-        }
-
-        .news-title {
-            font-size: 1.3rem;
-            color: #1a202c;
-            margin-bottom: 12px;
-            font-weight: 700;
-        }
-
-        .news-summary {
-            font-size: 1.05rem;
-            color: #4a5568;
-            margin-bottom: 16px;
-            word-break: keep-all;
-        }
-
-        /* 어려운 단어 풀이 */
-        .dictionary-box {
-            background-color: var(--accent-yellow);
-            border-left: 4px solid var(--border-yellow);
-            padding: 12px 16px;
-            border-radius: 0 8px 8px 0;
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-        }
-
-        .dictionary-title {
-            font-weight: 700;
-            color: #b56e02;
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* 영상 링크 버튼 */
-        .video-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background-color: #ff0000;
-            color: white;
-            text-decoration: none;
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: background-color 0.2s;
-        }
-
-        .video-btn:hover {
-            background-color: #cc0000;
-        }
-
-        /* 푸터 */
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            border-top: 1px solid #e2e8f0;
-            padding-top: 20px;
-        }
+        .activity-btn.selected { background: #ec407a; color: white; border-color: #ec407a; }
+        .bridge-btn.selected { background: #5e35b1; color: white; border-color: #5e35b1; }
+        
+        /* 성장 기록 및 입력창 */
+        .badge-container { display: flex; flex-direction: column; align-items: center; padding: 12px; background: #f1f8e9; border-radius: 10px; margin-bottom: 12px; border: 1px dashed #81c784; }
+        .badge-icon { font-size: 36px; margin-bottom: 4px; }
+        .badge-text { font-size: 13px; font-weight: bold; color: #2e7d32; }
+        
+        label { font-size: 12px; font-weight: bold; color: #555; display: block; margin-top: 8px; margin-bottom: 4px; }
+        input[type="text"] { width: 100%; padding: 10px; border: 1.5px solid #e0e0e0; border-radius: 8px; font-size: 13px; margin-bottom: 4px; }
+        
+        /* 버튼류 */
+        .save-btn { width: 100%; padding: 12px; background: #4caf50; color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; margin-top: 8px; }
+        .email-btn { background: #2196f3; }
+        .reset-btn { background: none; border: none; color: #999; text-decoration: underline; font-size: 11px; width: 100%; cursor: pointer; margin-top: 16px; }
+        
+        /* 팝업 모달 */
+        .popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.85); color: white; padding: 14px 24px; border-radius: 30px; display: none; z-index: 2000; text-align: center; font-weight: bold; font-size: 13px; border: 1px solid #fff; width: 80%; max-width: 300px; }
+        .day-box.is-today .day-label { color: #5e35b1; font-weight: bold; text-decoration: underline; }
     </style>
 </head>
 <body>
-
+    <div id="popup" class="popup"></div>
     <div class="container">
-        <header>
-            <div class="logo">☀️</div>
-            <h1>오늘의 어린이 아침 뉴스</h1>
-            <div class="date-badge" id="current-date">2026년 5월 17일 일요일</div>
-        </header>
-
-        <div class="intro-box">
-            👋 <strong>어린이 여러분 반가워요!</strong> 매일 아침 세상의 신기하고 중요한 이야기들을 자극적이지 않고 쉬운 말로 전해드립니다. 빨간 버튼을 누르면 뉴스 영상으로 바로 이동해요!
+        <div class="card">
+            <h1>⭐ 우리 아이 주간 루틴표</h1>
+            <div class="subtitle">"오늘의 작은 발걸음이 내일의 큰 꿈이 될 거야!"</div>
+            <div class="filter-container">
+                <button id="viewAll" class="filter-btn active" onclick="setFilter('all')">전체 루틴</button>
+                <button id="viewToday" class="filter-btn" onclick="setFilter('today')">오늘만 집중</button>
+            </div>
         </div>
 
-        <main class="news-list">
-            
-            <!-- 뉴스 1 -->
-            <article class="news-card">
-                <div class="card-header">
-                    <span class="rank-badge">중요도 1</span>
-                    <span class="source-badge">KBS 뉴스</span>
-                </div>
-                <h2 class="news-title">🚀 "달까지 달린다!"… 대한민국이 만든 우주 탐사 로봇 공개</h2>
-                <p class="news-summary">
-                    우리나라 과학자들이 달 표면을 스스로 돌아다니며 조사할 수 있는 똑똑한 로봇(로버)을 만들었어요. 이 로봇은 달의 울퉁불퉁하고 먼지가 많은 위험한 땅에서도 넘어지지 않고 씩씩하게 걸어갈 수 있답니다. 앞으로 우주비행사 형, 누나들이 달에 가기 전에 먼저 가서 땅을 조사하는 멋진 임무를 맡게 될 거래요!
-                </p>
-                <div class="dictionary-box">
-                    <div class="dictionary-title">💡 어려운 단어 풀이</div>
-                    <p><strong>탐사(探査):</strong> 알려지지 않은 물건이나 새로운 땅을 찾아가서 샅샅이 조사하는 것.</p>
-                </div>
-                <a href="https://www.youtube.com" target="_blank" class="video-btn">
-                    📺 유튜브 영상으로 바로 보기
-                </a>
-            </article>
+        <div id="routineContainer">
+            <div class="section-header morning">🌅 아침 루틴</div>
+            <div id="morningRoutines"></div>
+            <div class="section-header afternoon">☀️ 오후 루틴</div>
+            <div id="afternoonRoutines"></div>
+        </div>
 
-            <!-- 뉴스 2 -->
-            <article class="news-card">
-                <div class="card-header">
-                    <span class="rank-badge">중요도 2</span>
-                    <span class="source-badge">SBS 뉴스</span>
-                </div>
-                <h2 class="news-title">🐼 "벌써 이렇게 컸다고?"… 아기 판다들의 신나는 봄소풍</h2>
-                <p class="news-summary">
-                    동물원에 사는 아기 판다들이 따뜻한 봄을 맞아 처음으로 야외 놀이터로 소풍을 나왔습니다. 엄마 판다의 뒤를 졸졸 따라다니며 미끄럼틀도 타고, 푸른 잔디밭에서 뒹굴며 장난치는 모습이 포착되었는데요. 사육사 아저씨는 아기 판다들이 아주 건강하게 잘 자라고 있다고 기쁜 소식을 전했습니다.
-                </p>
-                <div class="dictionary-box">
-                    <div class="dictionary-title">💡 어려운 단어 풀이</div>
-                    <p><strong>포착(捕捉):</strong> 어떤 꼭 필요한 순간이나 모습을 눈으로 딱 찾아내거나 사진/영상으로 찍는 것.</p>
-                </div>
-                <a href="https://www.youtube.com" target="_blank" class="video-btn">
-                    📺 유튜브 영상으로 바로 보기
-                </a>
-            </article>
+        <div class="weekend-wrapper" id="weekendSection">
+            <div class="card" style="border-left: 4px solid #ec407a;">
+                <h2>✨ 토요일 특별 활동</h2>
+                <div id="saturdayActivities"></div>
+            </div>
+            <div class="card" style="border-left: 4px solid #5e35b1;">
+                <h2>🌉 일요일 브릿지</h2>
+                <div id="sundayBridges"></div>
+            </div>
+        </div>
 
-            <!-- 뉴스 3 -->
-            <article class="news-card">
-                <div class="card-header">
-                    <span class="rank-badge">중요도 3</span>
-                    <span class="source-badge">MBC 뉴스</span>
-                </div>
-                <h2 class="news-title">🌊 "바다 쓰레기는 내가 잡는다!"… 청소 로봇 배의 활약</h2>
-                <p class="news-summary">
-                    바다에 버려진 플라스틱과 그물 때문에 해양 동물들이 아파하고 있어요. 그래서 인공지능(AI)이 탑재된 커다란 '청소 로봇 배'가 바다에 투입되었습니다. 이 배는 사람이 타지 않아도 스스로 바다 위를 둥둥 떠다니며 쓰레기만 쏙쏙 골라 담는 능력을 가지고 있어요. 우리 바다가 다시 깨끗해질 수 있겠죠?
-                </p>
-                <div class="dictionary-box">
-                    <div class="dictionary-title">💡 어려운 단어 풀이</div>
-                    <p><strong>탑재(搭載):</strong> 비행기, 배, 자동차 또는 기계 안에 물건이나 특별한 기능(프로그램)을 쏙 집어넣어 싣는 것.</p>
-                </div>
-                <a href="https://www.youtube.com" target="_blank" class="video-btn">
-                    📺 유튜브 영상으로 바로 보기
-                </a>
-            </article>
-
-            <!-- 뉴스 4 -->
-            <article class="news-card">
-                <div class="card-header">
-                    <span class="rank-badge">중요도 4</span>
-                    <span class="source-badge">YTN 뉴스</span>
-                </div>
-                <h2 class="news-title">🤖 "체육 시간에 로봇이 나타났다!"… 미래형 초등학교 교실</h2>
-                <p class="news-summary">
-                    한 초등학교 교실에 아주 특별한 선생님이 오셨습니다. 바로 인공지능 화면이 달린 운동 로봇인데요! 이 로봇은 친구들이 줄넘기를 하거나 달리기를 할 때 자세가 바른지, 얼마나 열심히 했는지 카메라로 보고 칭찬을 해줍니다. 친구들은 게임을 하는 것 같아서 체육 시간이 훨씬 더 즐거워졌다고 해요.
-                </p>
-                <div class="dictionary-box">
-                    <div class="dictionary-title">💡 어려운 단어 풀이</div>
-                    <p><strong>미래형(未來型):</strong> 앞으로 다가올 앞날에 어울리는 아주 새롭고 발전된 모습이나 스타일.</p>
-                </div>
-                <a href="https://www.youtube.com" target="_blank" class="video-btn">
-                    📺 유튜브 영상으로 바로 보기
-                </a>
-            </article>
-
-            <!-- 뉴스 5 -->
-            <article class="news-card">
-                <div class="card-header">
-                    <span class="rank-badge">중요도 5</span>
-                    <span class="source-badge">JTBC 뉴스</span>
-                </div>
-                <h2 class="news-title">🌌 밤하늘에 펼쳐진 마법… 전 세계를 물들인 '분홍빛 오로라'</h2>
-                <p class="news-summary">
-                    어젯밤 세계 곳곳의 밤하늘이 보라색과 분홍색 빛으로 물드는 마법 같은 일이 일어났습니다. 바로 우주에서 온 신비한 에너지가 지구와 만나 빛을 내는 '오로라' 현상 때문인데요. 평소에는 아주 추운 북극 근처에서만 볼 수 있지만, 이번에는 아주 강력한 우주 바람이 불어와서 더 많은 나라의 사람들이 멋진 우주 쇼를 구경할 수 있었다고 합니다.
-                </p>
-                <div class="dictionary-box">
-                    <div class="dictionary-title">💡 어려운 단어 풀이</div>
-                    <p><strong>현상(現象):</strong> 우리 눈이나 피부로 느킬 수 있게 세상에 나타나는 신기한 일이나 모양.</p>
-                </div>
-                <a href="https://www.youtube.com" target="_blank" class="video-btn">
-                    📺 유튜브 영상으로 바로 보기
-                </a>
-            </article>
-
-        </main>
-
-        <footer>
-            <p>☀️ 어린이 아침 뉴스 서비스 9살 눈높이 맞춤형 큐레이션</p>
-        </footer>
+        <div class="card" style="border-left: 4px solid #4caf50;">
+            <h2>💭 이번 주 성장 기록</h2>
+            <div class="badge-container" id="badgeArea">
+                <div class="badge-icon" id="badgeIcon">🌱</div>
+                <div class="badge-text" id="badgeText">씨앗이 심어졌어!</div>
+            </div>
+            <label>제일 쉬웠던 것:</label><input type="text" id="weeklyEasy">
+            <label>힘들었던 것:</label><input type="text" id="weeklyHard">
+            <label>다음 주 작전:</label><input type="text" id="weeklyPlan">
+            <button class="save-btn" onclick="saveReflection()">기록 저장하기</button>
+            <button class="save-btn email-btn" onclick="sendWeeklyEmail()">📧 기록 메일 보내기</button>
+            <button class="reset-btn" onclick="manualResetRoutines()">🔄 새로운 주 시작 (전체 초기화)</button>
+        </div>
     </div>
 
     <script>
-        // 자동으로 오늘 날짜를 표시하는 간단한 코드
-        const today = new Date();
-        const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
-        document.getElementById('current-date').textContent = today.toLocaleDateString('ko-KR', options);
+        const weekdayList = ['월', '화', '수', '목', '금'];
+        const fullWeekList = ['월', '화', '수', '목', '금', '토', '일'];
+        const sixDayList = ['월', '화', '수', '목', '금', '주말'];
+        const weekendList = ['토', '일'];
+        const todayIdx = (new Date().getDay() + 6) % 7;
+        const todayName = fullWeekList[todayIdx];
+        const todayLabel = todayIdx >= 5 ? '주말' : todayName;
+
+        const routineData = {
+            morning: [{ id: 'english', name: '영어도서관 30분', emoji: '📚', trigger: '아침밥 먹으면서', effort: '집중해서 10분만 들어도 OK!', allowSick: true }],
+            afternoon: [
+                { id: 'backpack', name: '책가방 비우기', emoji: '🎒', trigger: '학교 다녀와서 곧장', allowSick: true },
+                { id: 'math_all', name: '수학공부(핀란드/학교/달콤)', emoji: '🔢', trigger: '간식 시간', weekendEnabled: true, allowSick: true },
+                { id: 'english_listening', name: '영어책 집중듣기', emoji: '🎧', trigger: '수학 끝내고 재밌는 책 보자', instruction: '오늘 읽은 책에서 제일 마음에 드는 문장 하나만 적어줘', isSixDay: true, allowSick: true },
+                { id: 'hanja', name: '한자 2페이지', emoji: '✍️', trigger: '집중듣기 끝나면', offDays: [1, 3], allowSick: true },
+                { id: 'reading_weekday', name: '자유 선택 독서', emoji: '📖', trigger: '평일 오후 읽고 싶은 책 꺼내기', weekdayOnly: true, allowSick: true },
+                { id: 'reading_weekend', name: '주말 고정 독서', emoji: '📕', trigger: '토~일 이야기책 읽기', weekendOnly: true, allowSick: true },
+                { id: 'ringfit', name: '운동 (러닝/링핏)', emoji: '🏃', trigger: '식후 한 시간 뒤', weekendEnabled: true, allowSick: true }
+            ]
+        };
+
+        const satItems = ['보드게임 1판', '물감 그림 그리기', '만들기 활동', '도서관 방문', '가족 예능 보기'];
+        const sunItems = ['영어도서관', 'ORT', '수학 문제 1개만', '책 4페이지만 읽기'];
+        const readingMsgs = ["책 속의 보물을 찾았구나! 💎", "생각의 주머니가 한 뼘 더 커졌네! 🎈", "멋진 독서가! 오늘 정말 훌륭해 📖"];
+        const normalMsgs = ["대단해! 해냈구나! 🌟", "멋져! 끝까지 해냈어 👍", "최고야! 기분이 좋지? 😊"];
+        const sickMsg = ["오늘은 푹 쉬고 빨리 나으자! 💊", "충분한 휴식도 성장의 일부야 🛌"];
+
+        let data = JSON.parse(localStorage.getItem('routineData')) || { routines: {}, weekend: [], bridge: '', weekly: {} };
+        let currentFilter = 'all';
+
+        function createConfetti() {
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
+                confetti.style.animationDuration = (Math.random() * 1.5 + 1) + 's';
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 2500);
+            }
+        }
+
+        function toggle(id, d, allowSick) {
+            const key = id + '-' + d;
+            const s = data.routines[key] || 'empty';
+            if (s === 'empty') data.routines[key] = 'checked';
+            else if (s === 'checked') data.routines[key] = 'circle';
+            else if (s === 'circle' && allowSick) data.routines[key] = 'sick';
+            else data.routines[key] = 'empty';
+            
+            if(data.routines[key] !== 'empty') {
+                createConfetti();
+                let msgs = data.routines[key] === 'sick' ? sickMsg : (id.includes('reading') ? readingMsgs : normalMsgs);
+                showPopup(msgs[Math.floor(Math.random() * msgs.length)]);
+            }
+            save(); render();
+        }
+
+        function save() { localStorage.setItem('routineData', JSON.stringify(data)); }
+        function showPopup(m) { const p = document.getElementById('popup'); p.textContent = m; p.style.display = 'block'; setTimeout(() => p.style.display = 'none', 1800); }
+
+        function createCard(r) {
+            let days = r.weekendEnabled ? fullWeekList : (r.weekdayOnly ? weekdayList : (r.weekendOnly ? weekendList : (r.isSixDay ? sixDayList : weekdayList)));
+            let currentCheckLabel = r.isSixDay ? todayLabel : todayName;
+            if (currentFilter === 'today' && !days.includes(currentCheckLabel)) return '';
+            
+            let dHtml = '';
+            let displayDays = (currentFilter === 'today') ? [currentCheckLabel] : days;
+
+            displayDays.forEach((d) => {
+                const state = data.routines[r.id + '-' + d] || 'empty';
+                const isOff = r.offDays?.includes(fullWeekList.indexOf(d));
+                dHtml += `<div class="day-box ${d === currentCheckLabel ? 'is-today' : ''}">
+                    <div class="day-label">${d}</div>
+                    <button class="day-btn ${isOff ? 'off' : state}" ${isOff ? 'disabled' : `onclick="toggle('${r.id}','${d}', ${r.allowSick})"`}>
+                        ${state === 'checked' ? '<svg class="checkmark" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>' : state === 'circle' ? '<div class="circle-icon"></div>' : state === 'sick' ? '🤒' : (isOff ? 'OFF' : '')}
+                    </button>
+                </div>`;
+            });
+
+            if (currentFilter === 'today' && !r.isSixDay && r.offDays?.includes(todayIdx)) return '';
+
+            let gridClass = currentFilter === 'today' ? '' : (days.length === 7 ? 'seven-days' : (days.length === 6 ? 'six-days' : (days.length === 2 ? 'weekend-only' : 'five-days')));
+
+            return `<div class="routine-card">
+                <div class="routine-header">
+                    <span class="routine-emoji">${r.emoji}</span>
+                    <span class="routine-name">${r.name}</span>
+                </div>
+                ${r.effort ? `<div class="effort-guide">⭕ ${r.effort}</div>` : ''}
+                <div class="routine-trigger">⏰ ${r.trigger}</div>
+                ${r.instruction ? `<div class="routine-note">💡 ${r.instruction}</div>` : ''}
+                <div class="days-grid ${gridClass}">${dHtml}</div>
+            </div>`;
+        }
+
+        function updateBadge() {
+            const count = Object.values(data.routines).filter(v => v !== 'empty').length;
+            const icon = document.getElementById('badgeIcon'); const text = document.getElementById('badgeText');
+            if (count < 8) { icon.textContent = '🌿'; text.textContent = '새싹이 올라왔어! 대단해!'; }
+            else if (count < 20) { icon.textContent = '🌳'; text.textContent = '우와, 튼튼한 나무가 되었어!'; }
+            else { icon.textContent = '🍎'; text.textContent = '축하해! 황금 열매가 열렸어!'; }
+        }
+
+        function sendWeeklyEmail() {
+            let greenCount = 0; let yellowCount = 0; let sickCount = 0;
+            Object.values(data.routines).forEach(s => { 
+                if(s === 'checked') greenCount++; 
+                if(s === 'circle') yellowCount++;
+                if(s === 'sick') sickCount++;
+            });
+            const body = `이번 주 루틴 결과입니다!\n\n✅ 초록 체크: ${greenCount}개\n⭕ 노란 동그라미: ${yellowCount}개\n🤒 아파요: ${sickCount}개\n\n💭 한 마디:\n쉬웠던 것: ${data.weekly.easy || '-'}\n힘들었던 것: ${data.weekly.hard || '-'}\n내일 작전: ${data.weekly.plan || '-'}`;
+            window.location.href = `mailto:?subject=[루틴표] 이번 주 기록&body=${encodeURIComponent(body)}`;
+        }
+
+        function manualResetRoutines() {
+            if (confirm('⚠️ 이번 주 기록을 모두 초기화할까요?')) {
+                data = { routines: {}, weekend: [], bridge: '', weekly: {} };
+                save(); render(); alert('초기화 완료! 새로운 한 주 화이팅! 🌟');
+            }
+        }
+
+        function setFilter(f) { 
+            currentFilter = f; 
+            document.getElementById('viewAll').classList.toggle('active', f === 'all'); 
+            document.getElementById('viewToday').classList.toggle('active', f === 'today'); 
+            const isWeekend = todayIdx >= 5; 
+            document.getElementById('weekendSection').style.display = (f === 'today' && !isWeekend) ? 'none' : 'flex'; 
+            render(); 
+        }
+
+        function toggleSat(a) { const i = data.weekend.indexOf(a); if(i > -1) data.weekend.splice(i, 1); else if(data.weekend.length < 2) { data.weekend.push(a); createConfetti(); } save(); render(); }
+        function setBridge(b) { data.bridge = data.bridge === b ? '' : b; if(data.bridge) createConfetti(); save(); render(); }
+        function saveReflection() { data.weekly = { easy: document.getElementById('weeklyEasy').value, hard: document.getElementById('weeklyHard').value, plan: document.getElementById('weeklyPlan').value }; save(); alert('저장 완료!'); }
+
+        function render() {
+            const morningHtml = routineData.morning.map(createCard).join('');
+            const afternoonHtml = routineData.afternoon.map(createCard).join('');
+            document.getElementById('morningRoutines').innerHTML = morningHtml;
+            document.getElementById('afternoonRoutines').innerHTML = afternoonHtml;
+            document.querySelector('.section-header.morning').style.display = morningHtml === '' ? 'none' : 'inline-block';
+            document.querySelector('.section-header.afternoon').style.display = afternoonHtml === '' ? 'none' : 'inline-block';
+            document.getElementById('saturdayActivities').innerHTML = satItems.map(a => `<button class="activity-btn ${data.weekend.includes(a) ? 'selected' : ''}" onclick="toggleSat('${a}')">${a}</button>`).join('');
+            document.getElementById('sundayBridges').innerHTML = sunItems.map(b => `<button class="activity-btn bridge-btn ${data.bridge === b ? 'selected' : ''}" onclick="setBridge('${b}')">${b}</button>`).join('');
+            
+            if(data.weekly.easy) document.getElementById('weeklyEasy').value = data.weekly.easy;
+            if(data.weekly.hard) document.getElementById('weeklyHard').value = data.weekly.hard;
+            if(data.weekly.plan) document.getElementById('weeklyPlan').value = data.weekly.plan;
+            
+            updateBadge();
+        }
+        render();
     </script>
 </body>
 </html>
