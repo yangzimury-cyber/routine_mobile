@@ -72,6 +72,7 @@
         .days-grid.seven-days { grid-template-columns: repeat(7, 1fr); }
         .days-grid.six-days { grid-template-columns: repeat(6, 1fr); }
         .days-grid.five-days { grid-template-columns: repeat(5, 1fr); }
+        .days-grid.three-days { grid-template-columns: repeat(3, 1fr); }
         .days-grid.weekend-only { grid-template-columns: repeat(2, 1fr); }
         
         .day-box { display: flex; flex-direction: column; align-items: center; gap: 2px; }
@@ -185,22 +186,24 @@
         const fullWeekList = ['월', '화', '수', '목', '금', '토', '일'];
         const sixDayList = ['월', '화', '수', '목', '금', '주말'];
         const weekendList = ['토', '일'];
+        const hanjaList = ['월', '수', '목']; // 한자 전용 요일
+        
         const todayIdx = (new Date().getDay() + 6) % 7;
         const todayName = fullWeekList[todayIdx];
         const todayLabel = todayIdx >= 5 ? '주말' : todayName;
 
-        // [수정 포인트] 오후 루틴: 영어책 집중듣기 바로 아래에 'AI와 영어로 대화하기' 추가
+        // [수정 완료] 오후 루틴 순서 및 한자 요일(월, 수, 목) 변경
         const routineData = {
             morning: [
                 { id: 'english', name: '영어도서관 30분', emoji: '📚', trigger: '아침밥 먹으면서', effort: '집중해서 10분만 들어도 OK!', allowSick: true },
                 { id: 'english_read_along', name: '영어 따라 읽기', emoji: '🗣️', weekdayOnly: true, allowSick: true },
-                { id: 'math_all', name: '수학공부', emoji: '🔢', trigger: '오전 공부 시간', weekendEnabled: true, allowSick: true }
+                { id: 'math_all', name: '수학공부(핀란드/학교/달콤)', emoji: '🔢', trigger: '오전 공부 시간', weekendEnabled: true, allowSick: true }
             ],
             afternoon: [
+                { id: 'hanja', name: '한자 학습', emoji: '✍️', customDays: hanjaList, instruction: '학습지? 한자어책?', allowSick: true },
                 { id: 'english_listening', name: '영어책 집중듣기', emoji: '🎧', instruction: '오늘 읽은 책에서 제일 마음에 드는 문장 하나만 적어줘', isSixDay: true, allowSick: true },
-                { id: 'ai_english_talk', name: 'AI와 영어로 대화하기', emoji: '🤖', weekdayOnly: true, allowSick: true },
                 { id: 'english_write_sentence', name: '마음에 드는 문장 따라 쓰기', emoji: '✏️', weekdayOnly: true, allowSick: true },
-                { id: 'hanja', name: '한자 학습', emoji: '✍️', trigger: '집중듣기 끝나면', instruction: '학습지? 한자어책?', offDays: [1, 3], allowSick: true },
+                { id: 'ai_english_talk', name: 'AI와 영어로 대화하기', emoji: '🤖', weekdayOnly: true, allowSick: true },
                 { id: 'reading_combined', name: '독서 시간', emoji: '📖', trigger: '읽고 싶은 책 자유롭게 꺼내기', weekendEnabled: true, allowSick: true },
                 { id: 'ringfit', name: '운동 (러닝/링핏)', emoji: '🏃', trigger: '식후 한 시간 뒤', weekendEnabled: true, allowSick: true }
             ]
@@ -248,7 +251,7 @@
         function showPopup(m) { const p = document.getElementById('popup'); p.textContent = m; p.style.display = 'block'; setTimeout(() => p.style.display = 'none', 1800); }
 
         function createCard(r) {
-            let days = r.weekendEnabled ? fullWeekList : (r.weekdayOnly ? weekdayList : (r.weekendOnly ? weekendList : (r.isSixDay ? sixDayList : weekdayList)));
+            let days = r.customDays ? r.customDays : (r.weekendEnabled ? fullWeekList : (r.weekdayOnly ? weekdayList : (r.weekendOnly ? weekendList : (r.isSixDay ? sixDayList : weekdayList))));
             let currentCheckLabel = r.isSixDay ? todayLabel : todayName;
             if (currentFilter === 'today' && !days.includes(currentCheckLabel)) return '';
             
@@ -268,7 +271,7 @@
 
             if (currentFilter === 'today' && !r.isSixDay && r.offDays?.includes(todayIdx)) return '';
 
-            let gridClass = currentFilter === 'today' ? '' : (days.length === 7 ? 'seven-days' : (days.length === 6 ? 'six-days' : (days.length === 2 ? 'weekend-only' : 'five-days')));
+            let gridClass = currentFilter === 'today' ? '' : (days.length === 7 ? 'seven-days' : (days.length === 6 ? 'six-days' : (days.length === 3 ? 'three-days' : (days.length === 2 ? 'weekend-only' : 'five-days'))));
 
             return `<div class="routine-card">
                 <div class="routine-header">
