@@ -192,18 +192,18 @@
         const todayName = fullWeekList[todayIdx];
         const todayLabel = todayIdx >= 5 ? '주말' : todayName;
 
-        // [수정 완료] 오후 루틴 순서 및 한자 요일(월, 수, 목) 변경
+        // [수정] AI와 영어로 대화하기 항목을 오전 루틴 마지막으로 이동
         const routineData = {
             morning: [
                 { id: 'english', name: '영어도서관 30분', emoji: '📚', trigger: '아침밥 먹으면서', effort: '집중해서 10분만 들어도 OK!', allowSick: true },
                 { id: 'english_read_along', name: '영어 따라 읽기', emoji: '🗣️', weekdayOnly: true, allowSick: true },
-                { id: 'math_all', name: '수학공부(핀란드/학교/달콤)', emoji: '🔢', trigger: '오전 공부 시간', weekendEnabled: true, allowSick: true }
+                { id: 'math_all', name: '수학공부(핀란드/학교/달콤)', emoji: '🔢', trigger: '오전 공부 시간', weekendEnabled: true, allowSick: true },
+                { id: 'ai_english_talk', name: 'AI와 영어로 대화하기', emoji: '🤖', weekdayOnly: true, allowSick: true }
             ],
             afternoon: [
                 { id: 'hanja', name: '한자 학습', emoji: '✍️', customDays: hanjaList, instruction: '학습지? 한자어책?', allowSick: true },
                 { id: 'english_listening', name: '영어책 집중듣기', emoji: '🎧', instruction: '오늘 읽은 책에서 제일 마음에 드는 문장 하나만 적어줘', isSixDay: true, allowSick: true },
                 { id: 'english_write_sentence', name: '마음에 드는 문장 따라 쓰기', emoji: '✏️', weekdayOnly: true, allowSick: true },
-                { id: 'ai_english_talk', name: 'AI와 영어로 대화하기', emoji: '🤖', weekdayOnly: true, allowSick: true },
                 { id: 'reading_combined', name: '독서 시간', emoji: '📖', trigger: '읽고 싶은 책 자유롭게 꺼내기', weekendEnabled: true, allowSick: true },
                 { id: 'ringfit', name: '운동 (러닝/링핏)', emoji: '🏃', trigger: '식후 한 시간 뒤', weekendEnabled: true, allowSick: true }
             ]
